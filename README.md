@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="web_scraping icon" src="./logo" height="300px" />
+  <img alt="web_scraping icon" src="./logo.png" height="300px" />
   <br />
   Welcome to My GitHub Web Scraping Project!
 </h1>
