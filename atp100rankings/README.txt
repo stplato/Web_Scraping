@@ -3,32 +3,26 @@
 Overview:
 ---------
 
-This Python script is designed to scrape the ATP (Association of Tennis Professionals) website for the ATP 100 rankings. The script retrieves the rankings for each week and stores the data in a pandas DataFrame. Additionally, it outputs the data to a CSV file named 'atp100rankingsbyweek.csv'.
+This Python script is designed to scrape the ATP (Association of Tennis Professionals) website for the ATP 100 rankings. The script retrieves the rankings for each week and stores the data in a pandas DataFrame. Additionally, it outputs the data to a CSV file named 'atp100rankingsbyweek.csv' and a PDF file named 'atp100_analytics.pdf'.
 
 Requirements:
 -------------
 
 - Python 3.x
-- Required Python libraries: requests, bs4 (Beautiful Soup), pandas
+- Required Python libraries: inserted to the file requirements.txt
 
 Usage:
 ------
 
-1. Ensure you have all the required Python libraries installed. You can install them using pip:
-   
-pip install requests
-pip install beautifulsoup4
-pip install pandas
+1. Place the provided Python script ('atp_rankings_scraper.py') and the .txt file ('requirements.txt') in your working directory.
 
-2. Place the provided Python script ('atp_rankings_scraper.py') in your working directory.
+2. Execute the script using a Python interpreter:
 
-3. Execute the script using a Python interpreter:
+   python atp_rankings_scraper.py
 
-python atp_rankings_scraper.py
+3. The script will fetch the ATP 100 rankings for the specified number of weeks (default is number of weeks for year 2024). The data will be displayed on the console, and it will be stored in a CSV file named 'atp100rankingsbyweek.csv' and will be generated a PDF file named 'atp100_analytics.pdf'.
 
-4. The script will fetch the ATP 100 rankings for the specified number of weeks (default is 10 weeks). The data will be displayed on the console, and it will be stored in a CSV file named 'atp100rankingsbyweek.csv'.
-
-5. You can modify the number of weeks to fetch by changing the value of the 'amt_weeks' variable inside the script.
+4. You can modify the number of weeks to fetch by changing the value of the 'amt_weeks' variable inside the script.
 
 Output:
 -------
