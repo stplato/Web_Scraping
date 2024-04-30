@@ -1,9 +1,11 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
 import seaborn as sns
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 
 def get_atp_100_info(week_list):
     BASE_URL = "https://www.atptour.com/en/rankings/singles?RankRange=0-100&Region=all&DateWeek"
@@ -70,8 +72,13 @@ def get_atp_100_info(week_list):
         except:
             df = pd.DataFrame(dict_temp)
         
-        #Change amt_weeks regarding the amount of weeks you want    
-        if amt_weeks == 10:
+         
+        # Filter the week_list to include only weeks for 2024.You can change the year by changing the inserted value of week.startswith('2024')
+        if  amt_weeks == 1:   
+            weeks_2024 = [week for week in week_list if week.startswith('2024')] 
+        #Change amt_weeks regarding the amount of weeks you want  
+        if amt_weeks == len(weeks_2024):
+            print(amt_weeks)
             break
         
     return df
@@ -93,5 +100,58 @@ df = get_atp_100_info(week_list)
 
 print(df)
 
-# Output the df to a csv file
-df.to_csv('atp100rankingsbyweek.csv', index=False)
+
+# Replace '-' with '0' using regex
+df['(+/-)'] = df['(+/-)'].replace(r'^-$', '0', regex=True)
+
+# Preprocess data to calculate total points earned/lost for each player from the same country in each week
+df['(+/-)'] = df['(+/-)'].astype(int)
+df_grouped = df.groupby(['week', 'country'])['(+/-)'].sum().reset_index()
+
+# Get the directory of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+pdf_filename = os.path.join(current_dir, 'atp100_analytics.pdf')
+
+# Get the directory of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+pdf_filename = os.path.join(current_dir, 'atp100_analytics.pdf')
+csv_filename = os.path.join(current_dir, 'atp100rankingsbyweek.csv')
+
+# Save the plots to a PDF file
+with PdfPages(pdf_filename) as pdf:
+    # Plotting for each week
+    for week in df['week'].unique():
+        # Combined plot to show which country has earned or lost points as a total of its players
+        plt.figure(figsize=(18, 10))
+        df_grouped_sorted = df_grouped.sort_values(by='(+/-)', ascending=False)
+        sns.barplot(data=df_grouped_sorted[df_grouped_sorted['week'] == week], x='(+/-)', y='country', hue='country', dodge=False, palette='viridis', legend=False)
+        plt.title(f'Points Lost or Earned by Players from the same Country - Week {week}')
+        plt.xlabel('Total Points Lost or Earned')
+        plt.ylabel('Country')
+        plt.tight_layout()
+        # Save the current figure to a page in the PDF file
+        pdf.savefig()  
+        plt.close()
+        #We want an example of the current week so we add a break.Comment break command if you want a figure for each week
+        break
+    
+    # Plotting for the year 2024
+    plt.figure(figsize=(18, 10))
+    df_grouped = df.groupby(['country'])['(+/-)'].sum().reset_index()
+    df_grouped_sorted = df_grouped.sort_values(by='(+/-)', ascending=False)
+    sns.barplot(data=df_grouped_sorted, x='(+/-)', y='country', palette='viridis')
+    plt.title('Points Lost or Earned by Players from the same Country - 2024')
+    plt.xlabel('Total Points Lost or Earned')
+    plt.ylabel('Country')
+    plt.tight_layout()
+    # Save the current figure to a page in the PDF file
+    pdf.savefig()  
+    plt.close()
+
+print(f"PDF '{pdf_filename}' generated successfully.")
+
+# Output the df to a csv file for further analysis
+df.to_csv(csv_filename)
+
+print(f"CSV '{csv_filename}' generated successfully.")
+
