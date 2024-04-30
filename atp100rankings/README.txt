@@ -27,7 +27,7 @@ Usage:
 Output:
 -------
 
-The script outputs the ATP 100 rankings data in tabular format. Each row represents a player's ranking for a specific week, including their country, player name, and points. The data is also saved to a CSV file for further analysis or storage.
+The script outputs the ATP 100 rankings data in tabular format. Each row represents a player's ranking for a specific week, including their country, player name, points earned/dropped in the current week (+/-), and the total tournaments played. The data is also saved to a CSV file for further analysis or storage.
 
 Disclaimer:
 -----------
