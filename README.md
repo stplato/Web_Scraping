@@ -1,7 +1,7 @@
 <h1 align="center">
   <img alt="web_scraping icon" src="./logo.png" height="300px" />
   <br />
-  Welcome to My GitHub Web Scraping Project!
+  Web Scraping Project
 </h1>
 
 **1. ATP 100 Rankings Web Scraping:**
